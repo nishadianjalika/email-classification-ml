@@ -19,7 +19,6 @@ def generate_train_test_splits():
     # Split the data manually
     train_df = email_df.iloc[:split_index].reset_index(drop=True)
     test_df = email_df.iloc[split_index:].reset_index(drop=True)
-    val_df = 
     # val_df 15%
 
     train_x = train_df['body']
