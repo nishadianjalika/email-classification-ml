@@ -14,17 +14,21 @@ def generate_train_test_splits():
 
     #so manually creatinf train and test set with 7:3 
     # Determine the split index
-    split_index = int(len(email_df) * 0.7)
+    train_split_index = int(len(email_df) * 0.7) #70% train
+    test_split_index = int(len(email_df) * 0.85)#remianing 15%-15% test and val
 
     # Split the data manually
-    train_df = email_df.iloc[:split_index].reset_index(drop=True)
-    test_df = email_df.iloc[split_index:].reset_index(drop=True)
-    # val_df 15%
+    train_df = email_df.iloc[:train_split_index].reset_index(drop=True) #0 until train_split_index
+    test_df = email_df.iloc[train_split_index:test_split_index].reset_index(drop=True) #from train_split_index to test_split_index
+    validation_df = email_df.iloc[test_split_index:].reset_index(drop=True) # from test_split_index to end
+
 
     train_x = train_df['body']
     train_y = train_df['from_']
     test_x = test_df['body']
     test_y = test_df['from_']
+    validation_x = validation_df['body']
+    validation_y = validation_df['from_']
 
     print(train_x.shape)
     print(train_y.shape)
@@ -35,7 +39,8 @@ def generate_train_test_splits():
     encoder = preprocessing.LabelEncoder()
     train_y = encoder.fit_transform(train_y)
     test_y = encoder.fit_transform(test_y)
+    validation_y = encoder.fit_transform(validation_y)
     #check data as a sanity check
     # print(train_x[0:5])
 
-    return train_x, train_y, test_x, test_y
+    return train_x, train_y, test_x, test_y, validation_x, validation_y
